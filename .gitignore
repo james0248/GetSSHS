@@ -1,5 +1,6 @@
-# Created by https://www.gitignore.io/api/vim,node,visualstudiocode,archlinuxpackages
-# Edit at https://www.gitignore.io/?templates=vim,node,visualstudiocode,archlinuxpackages
+
+# Created by https://www.gitignore.io/api/vim,node,code,react,archlinuxpackages
+# Edit at https://www.gitignore.io/?templates=vim,node,code,react,archlinuxpackages
 
 ### ArchLinuxPackages ###
 *.tar
@@ -14,6 +15,13 @@
 *.sig
 
 pkg/
+
+### Code ###
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
 
 ### Node ###
 # Logs
@@ -119,6 +127,19 @@ dist/
 tmp/
 temp/
 
+### react ###
+.DS_*
+**/*.backup.*
+**/*.back.*
+
+node_modules
+
+*.sublime*
+
+psd
+thumb
+sketch
+
 ### Vim ###
 # Swap
 [._]*.s[a-v][a-z]
@@ -144,15 +165,4 @@ tags
 # Coc configuration directory
 .vim
 
-### VisualStudioCode ###
-.vscode/*
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
-
-### VisualStudioCode Patch ###
-# Ignore all local history of files
-.history
-
-# End of https://www.gitignore.io/api/vim,node,visualstudiocode,archlinuxpackages
+# End of https://www.gitignore.io/api/vim,node,code,react,archlinuxpackages
