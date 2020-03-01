@@ -24,11 +24,23 @@ class Tile extends Component {
     }
 
     render() {
+        let style = this.props.tile.isMerged? {
+            borderWidth: '5px',
+            borderColor: 'red',
+            borderStyle: 'solid',
+        } : null;
+
+        style = this.props.tile.isNew? {
+            borderWidth: '5px',
+            borderColor: 'blue',
+            borderStyle: 'solid',
+        } : style
         return (
             <img
-                src={image[this.props.rank]}
+                src={image[this.props.tile.rank]}
                 width={200}
                 height={200}
+                style={style}
             ></img>
         )
     }

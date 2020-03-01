@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import autoBind from 'autobind'
 import Grid from './Grid'
 import gameManager from '../../../game/gameManager'
 
