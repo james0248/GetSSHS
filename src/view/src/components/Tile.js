@@ -35,6 +35,7 @@ class Tile extends Component {
             borderColor: 'blue',
             borderStyle: 'solid',
         } : style
+
         return (
             <img
                 src={image[this.props.tile.rank]}
