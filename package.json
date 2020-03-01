@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "anime": "^0.1.2",
     "autobind": "^1.0.3",
     "dotenv": "^8.2.0",
     "koa": "^2.11.0",
@@ -21,8 +22,8 @@
     "watcherGlob": "**"
   },
   "devDependencies": {
-    "parcel-plugin-static-files-copy": "^2.3.1",
     "nodemon": "^2.0.2",
-    "parcel": "^1.12.4"
+    "parcel": "^1.12.4",
+    "parcel-plugin-static-files-copy": "^2.3.1"
   }
 }
