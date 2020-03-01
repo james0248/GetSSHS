@@ -1,7 +1,6 @@
 {
   "dependencies": {
     "anime": "^0.1.2",
-    "autobind": "^1.0.3",
     "dotenv": "^8.2.0",
     "koa": "^2.11.0",
     "koa-body": "^4.1.1",
