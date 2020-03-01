@@ -35,26 +35,28 @@ class gameManager {
         return moveMap[dir]
     }
 
-    getMovedPosition(x, y, dir) {
+    getMovedPosition(prev, dir) {
         let move = this.getDirectionVector(dir)
-
-        let nx = x + move.x, ny = y + move.y
-        let thisTile = this.board.board[x][y]
+        let { x, y } = prev
+        let next = { x: x + move.x, y: y + move.y }
+        let thisTile = this.board.getTile(prev)
 
         if (thisTile.rank === 0) {
-            return { x: x, y: y }
+            return prev
         }
-        while (nx >= 0 && ny >= 0 && nx < this.size && ny < this.size) {
-            let nextTile = this.board.board[nx][ny]
+
+        while (this.clamp(next.x) && this.clamp(next.y)) {
+            let nextTile = this.board.getTile(next)
             if ((nextTile.rank !== 0 && nextTile.rank !== thisTile.rank) || nextTile.isMerged) {
                 break
             }
             if (nextTile.rank === thisTile.rank && !nextTile.isMerged) {
-                return { x: nx, y: ny }
+                return next
             }
-            x = nx, y = ny, nx += move.x, ny += move.y
+            prev = next
+            next = { x: next.x + move.x, y: next.y + move.y }
         }
-        return { x: x, y: y }
+        return prev
     }
 
     moveTile(dir) {
@@ -62,25 +64,25 @@ class gameManager {
             return false
         }
 
-        let di = (dir === 2) ? -1 : 1
-        let dj = (dir === 3) ? -1 : 1
+        let moveX = (dir === 2) ? -1 : 1
+        let moveY = (dir === 3) ? -1 : 1
+        for (let x = (dir === 2) ? 3 : 0; this.clamp(x); x += moveX) {
+            for (let y = (dir === 3) ? 3 : 0; this.clamp(y); y += moveY) {
+                let prev = { x: x, y: y }
+                let rank = this.board.getTileRank(prev)
+                let next = this.getMovedPosition(prev, dir)
 
-        for (let i = (dir === 2) ? 3 : 0; i < this.size && i >= 0; i += di) {
-            for (let j = (dir === 3) ? 3 : 0; j < this.size && j >= 0; j += dj) {
-                let p = this.getMovedPosition(i, j, dir)
-                if (p.x === i && p.y === j) {
+                if (this.isPositionEqual(prev, next)) {
                     continue
                 }
-                if (this.board.board[p.x][p.y].rank === this.board.board[i][j].rank) {
-                    this.board.board[p.x][p.y].rank++
-                    this.board.board[p.x][p.y].isMerged = true
+                if (this.board.getTileRank(next) === rank) {
+                    this.board.setTile(next, { rank: rank + 1, isMerged: true })
                 } else {
-                    this.board.board[p.x][p.y] = this.board.board[i][j]
+                    this.board.setTile(next, { rank: rank, isMerged: false })
                 }
-                this.board.board[i][j] = { rank: 0, isMerged: false }
+                this.board.setTile(prev, { rank: 0, isMerged: false })
             }
         }
-
         this.board.fillEmptyTile(1)
 
         for (i = 0; i < 4; i++) {
@@ -101,18 +103,26 @@ class gameManager {
 
     isMoveAvailable(dir) {
         this.clearBoardTags()
-        let di = (dir === 2) ? -1 : 1
-        let dj = (dir === 3) ? -1 : 1
-
-        for (let i = (dir === 2) ? 3 : 0; i < this.size && i >= 0; i += di) {
-            for (let j = (dir === 3) ? 3 : 0; j < this.size && j >= 0; j += dj) {
-                let p = this.getMovedPosition(i, j, dir)
-                if (p.x !== i || p.y !== j) {
-                    return true;
+        let moveX = (dir === 2) ? -1 : 1
+        let moveY = (dir === 3) ? -1 : 1
+        for (let x = (dir === 2) ? 3 : 0; this.clamp(x); x += moveX) {
+            for (let y = (dir === 3) ? 3 : 0; this.clamp(y); y += moveY) {
+                let prev = { x: x, y: y }
+                let next = this.getMovedPosition(prev, dir)
+                if (!this.isPositionEqual(prev, next)) {
+                    return true
                 }
             }
         }
         return false
+    }
+
+    isPositionEqual(prev, next) {
+        return prev.x === next.x && prev.y === next.y
+    }
+
+    clamp(num) {
+        return num < this.size && 0 <= num
     }
 }
 

@@ -51,6 +51,18 @@ class gameBoard {
     getRandomRank() {
         return Math.floor(Math.random() * 2) + 1
     }
+
+    setTile(pos, tile) {
+        this.board[pos.x][pos.y] = tile
+    }
+
+    getTileRank(pos) {
+        return this.board[pos.x][pos.y].rank
+    }
+
+    getTile(pos) {
+        return this.board[pos.x][pos.y]
+    }
 }
 
 module.exports = gameBoard
