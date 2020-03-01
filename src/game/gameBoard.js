@@ -1,24 +1,35 @@
 class gameBoard {
     constructor(size) {
         this.size = size
-        this.board = new Array(4).fill(0).map(() => new Array(4).fill(0))
+        this.board = new Array(4).fill(0).map(() => new Array(4).fill({
+            rank: 0,
+            isMerged: false,
+            isNew: false,
+        }))
 
         this.fillEmptyTile(2)
     }
 
     fillEmptyTile(number) {
-        this.getRandomTile(number, this.getEmptyTile())
-            .forEach((index) => {
-                let x = Math.floor(index / 4), y = index % 4
-                this.board[x][y] = this.getRandomRank()
-            })
+        let emptyTiles = this.getRandomTile(number, this.getEmptyTile())
+        if(emptyTiles[0] === undefined) {
+            return
+        }
+        emptyTiles.forEach((index) => {
+            let x = Math.floor(index / 4), y = index % 4
+            this.board[x][y] = {
+                rank: this.getRandomRank(),
+                isMerged: false,
+                isNew: true,
+            }
+        })
     }
 
     getEmptyTile() {
         let emptyTile = []
         this.board.forEach((row, i) => {
             row.forEach((tile, j) => {
-                if (tile === 0) {
+                if (tile.rank === 0) {
                     emptyTile.push(4 * i + j)
                 }
             })
