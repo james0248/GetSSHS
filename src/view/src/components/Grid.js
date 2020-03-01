@@ -7,12 +7,12 @@ class Grid extends Component {
     }
 
     render() {
-        let board = this.props.board.map(row => {
-            let tileRow = row.map(tile => {
-                return <Tile rank={tile}/>
+        let board = this.props.board.map((row, x) => {
+            let tileRow = row.map((tile, y) => {
+                return <Tile key={4*x+y} rank={tile}/>
             })
             return (
-                <div className='grid-row'>
+                <div key={`grid-row-${x}`}className='grid-row'>
                     {tileRow}
                 </div>
             )
