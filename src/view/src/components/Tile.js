@@ -1,4 +1,5 @@
-import React, { Component } from 'react'
+import React, { Component, createRef } from 'react'
+import gsap from 'gsap'
 
 import logo_1 from '../../public/images/한과영.png'
 import logo_2 from '../../public/images/대구.png'
@@ -21,9 +22,25 @@ const image = {
 class Tile extends Component {
     constructor(props) {
         super(props)
+        this.ref = createRef()
+    }
+
+    componentDidUpdate() {
+        if(this.props.tile.isNew) {
+            gsap.fromTo(this.ref.current, { scale: 0 }, { scale: 1, duration: 0.2 })
+        }
+        if(this.props.tile.isMerged) {
+            gsap.fromTo(this.ref.current, { scale: 1 }, {
+                scale: 1.15,
+                duration: 0.07,
+                yoyo: true,
+                repeat: 1,
+            })
+        }
     }
 
     render() {
+        /*
         let style = this.props.tile.isMerged? {
             borderWidth: '5px',
             borderColor: 'red',
@@ -35,13 +52,17 @@ class Tile extends Component {
             borderColor: 'blue',
             borderStyle: 'solid',
         } : style
+        */
+       let style = null;
 
         return (
             <img
                 src={image[this.props.tile.rank]}
-                width={200}
-                height={200}
+                width='200'
+                height='200'
                 style={style}
+                className='grid-tile'
+                ref={this.ref}
             ></img>
         )
     }
