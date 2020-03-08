@@ -1,9 +1,11 @@
 import React, { Component, createRef } from 'react'
-import { gsap } from 'gsap'
+import { gsap, CSSPlugin } from 'gsap'
 import Tile from './Tile'
 import gameManager from '../../../game/gameManager'
 
-let game = new gameManager(4)
+const 
+    game = new gameManager(4),
+    imageSize = 100
 
 class Grid extends Component {
     constructor(props) {
@@ -12,7 +14,7 @@ class Grid extends Component {
             board: game.board.board,
             moveVector: [],
         }
-        this.tiles = []
+        this.tileRef = []
         this.handleKey = this.handleKey.bind(this)
     }
 
@@ -23,8 +25,18 @@ class Grid extends Component {
     handleKey(event) {
         let result = game.listen(event)
         if(result.moved) {
-            this.setState({
-                board: game.board.board,
+            this.tileRef.forEach((ref, index) => {
+                gsap.to(ref.ref.current, {
+                    x: result.moveVector[index].x * imageSize,
+                    y: result.moveVector[index].y * imageSize,
+                    duration: 0.1,
+                    clearProps: "transform",
+                    onComplete: (() => {
+                        this.setState({
+                            board: game.board.board,
+                        })
+                    })
+                })
             })
         }
     }
@@ -36,8 +48,10 @@ class Grid extends Component {
     render() {
         let board = this.state.board.map((row, x) => {
             let tileRow = row.map((tile, y) => {
-                this.tiles[4 * x + y] = createRef()
-                return <Tile key={4 * x + y} ref={this.tiles[4 * x + y]} tile={tile} />
+                return <Tile
+                    key={4 * x + y}
+                    ref={(tile) => { this.tileRef[4 * x + y] = tile }}
+                    tile={tile} />
             })
             return (
                 <div key={`grid-row-${x}`} className='grid-row'>
@@ -48,11 +62,8 @@ class Grid extends Component {
 
         return (
             <div
-                tabIndex='0'
-                onKeyDown={this.handleKey}
                 className='grid-container'
-                align='center'
-            >
+                align='center' >
                 {board}
             </div>
         )

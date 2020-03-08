@@ -72,7 +72,7 @@ class gameManager {
                 let prev = { x: x, y: y }
                 let rank = this.board.getTileRank(prev)
                 let next = this.getMovedPosition(prev, dir)
-                moveVector[4 * x + y] = { x: next.y - y, y: next.x - x }
+                moveVector[4*x+y] = { x: next.y - y, y: next.x - x }
 
                 if (this.isPositionEqual(prev, next)) {
                     continue
