@@ -28,7 +28,7 @@ class gameManager {
         if (mapped !== undefined) {
             return this.moveTile(mapped)
         }
-        return false
+        return { moved: false, moveVector: null }
     }
 
     getDirectionVector(dir) {
@@ -61,9 +61,10 @@ class gameManager {
 
     moveTile(dir) {
         if (!this.isMoveAvailable(dir)) {
-            return false
+            return {moved: false, moveVector: null}
         }
 
+        let moveVector = new Array(this.size * this.size).fill(0)
         let moveX = (dir === 2) ? -1 : 1
         let moveY = (dir === 3) ? -1 : 1
         for (let x = (dir === 2) ? 3 : 0; this.clamp(x); x += moveX) {
@@ -71,16 +72,17 @@ class gameManager {
                 let prev = { x: x, y: y }
                 let rank = this.board.getTileRank(prev)
                 let next = this.getMovedPosition(prev, dir)
+                moveVector[4 * x + y] = { x: next.y - y, y: next.x - x }
 
                 if (this.isPositionEqual(prev, next)) {
                     continue
                 }
                 if (this.board.getTileRank(next) === rank) {
-                    this.board.setTile(next, { rank: rank + 1, isMerged: true })
+                    this.board.setTile(next, { rank: rank + 1, isMerged: true , isNew: false })
                 } else {
-                    this.board.setTile(next, { rank: rank, isMerged: false })
+                    this.board.setTile(next, { rank: rank, isMerged: false, isNew: false })
                 }
-                this.board.setTile(prev, { rank: 0, isMerged: false })
+                this.board.setTile(prev, { rank: 0, isMerged: false, isNew: false })
             }
         }
         this.board.fillEmptyTile(1)
@@ -88,7 +90,7 @@ class gameManager {
         for (i = 0; i < 4; i++) {
             //
         }
-        return true
+        return { moved: true, moveVector: moveVector }
     }
 
     clearBoardTags() {

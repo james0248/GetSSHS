@@ -1,4 +1,5 @@
-import React, { Component } from 'react'
+import React, { Component, createRef } from 'react'
+import { gsap } from 'gsap'
 import Tile from './Tile'
 import gameManager from '../../../game/gameManager'
 
@@ -8,8 +9,10 @@ class Grid extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            board: game.board.board
+            board: game.board.board,
+            moveVector: [],
         }
+        this.tiles = []
         this.handleKey = this.handleKey.bind(this)
     }
 
@@ -17,22 +20,24 @@ class Grid extends Component {
         document.addEventListener('keydown', this.handleKey)
     }
 
-    componentWillUnmount() {
-        document.removeEventListener('keydown', this.handleKey)
-    }
-
     handleKey(event) {
-        if(game.listen(event)) {
+        let result = game.listen(event)
+        if(result.moved) {
             this.setState({
-                board: game.board.board
+                board: game.board.board,
             })
         }
+    }
+
+    componentWillUnmount() {
+        document.removeEventListener('keydown', this.handleKey)
     }
 
     render() {
         let board = this.state.board.map((row, x) => {
             let tileRow = row.map((tile, y) => {
-                return <Tile key={4*x+y} tile={tile} class='grid-tile'/>
+                this.tiles[4 * x + y] = createRef()
+                return <Tile key={4 * x + y} ref={this.tiles[4 * x + y]} tile={tile} />
             })
             return (
                 <div key={`grid-row-${x}`} className='grid-row'>
