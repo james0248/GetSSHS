@@ -1,7 +1,7 @@
 {
   "dependencies": {
-    "anime": "^0.1.2",
     "dotenv": "^8.2.0",
+    "gsap": "^3.2.2",
     "koa": "^2.11.0",
     "koa-body": "^4.1.1",
     "koa-router": "^7.4.0",
@@ -16,13 +16,14 @@
     "start:view": "parcel src/view/public/index.html",
     "build:view": "parcel build src/view/public/index.html"
   },
-  "staticFiles": {
-    "staticPath": "src/view/public/images",
-    "watcherGlob": "**"
-  },
   "devDependencies": {
     "nodemon": "^2.0.2",
-    "parcel": "^1.12.4",
-    "parcel-plugin-static-files-copy": "^2.3.1"
-  }
+    "parcel": "^1.12.4"
+  },
+  "name": "GetSHHS",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/james0248/GetSHHS.git",
+  "author": "james0248 <hsjames0248@gmail.com>",
+  "license": "MIT"
 }
