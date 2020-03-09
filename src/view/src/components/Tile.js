@@ -37,7 +37,7 @@ class Tile extends Component {
         }
         if(this.props.tile.isMerged) {
             gsap.fromTo(this.ref.current, { scale: 1 }, {
-                scale: 1.2,
+                scale: 1.1,
                 duration: 0.08,
                 yoyo: true,
                 repeat: 1,

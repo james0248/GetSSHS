@@ -1,3 +1,53 @@
+html {
+    font-family: Arial, Helvetica, sans-serif;
+    line-height: 30px;
+}
+
+hr {
+  border: 0;
+  clear:both;
+  display:block;
+  width: 100%;
+  background-color:black;
+  height: 1px;
+}
+
+.card {
+    display: flex;
+    margin: auto;
+    box-shadow: 3px 3px 5px 3px rgba(0, 0, 0, 0.35);
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+    width: 800px;
+}
+
+.header {
+    align-items: center;
+    display: flex;
+    margin-bottom: 30px;
+}
+
+.title {
+    margin: 0px;
+    display: inline-block;
+    font-size: 60px;
+    position: relative;
+    color: #000066;
+}
+
+.logo {
+    display: inline-block;
+    margin-right: 10px;
+    width: 60px;
+    height: 60px;
+}
+
+.explanation {
+    font-size: 18px;
+    margin-top: 10px;
+}
+
 .tile {
     width: 130px;
     height: 130px;
@@ -7,8 +57,9 @@
 }
 
 .grid-row {
-    margin-bottom: 15px;
-    width: fit-content;
+    margin-bottom: 7.5px;
+    margin-top: 7.5px;
+    margin-left: 15px;
     height: 130px;
 }
 
@@ -19,8 +70,26 @@
 }
 
 .grid-container {
+    display: flex;
+    flex-direction: column;
     background: gray;
-    width: fit-content;
+    width: 600px;
+    height: 600px;
+    border-radius: 1%;
+    margin: auto;
+    align-items: center;
+    justify-content: center;
+    align-content: center;
+    margin-top: 15px;
+}
+.game-container {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    margin: 100px;
+    justify-content: center;
+    align-content: center;
+    width: 600px;
 }
 
 .empty {

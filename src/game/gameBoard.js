@@ -49,7 +49,7 @@ class gameBoard {
     }
 
     getRandomRank() {
-        return Math.floor(Math.random() * 2) + 1
+        return (Math.random() < 0.9)? 1 : 2
     }
 
     setTile(pos, tile) {

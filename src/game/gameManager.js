@@ -21,6 +21,7 @@ class gameManager {
     constructor(size) {
         this.size = size
         this.board = new gameBoard(size)
+        this.score = 0
     }
 
     listen(event) {
@@ -29,6 +30,11 @@ class gameManager {
             return this.moveTile(mapped)
         }
         return { moved: false, moveVector: null }
+    }
+
+    reset() {
+        this.board = new gameBoard(this.size)
+        this.score = 0
     }
 
     getDirectionVector(dir) {

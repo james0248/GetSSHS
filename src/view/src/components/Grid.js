@@ -27,6 +27,7 @@ class Grid extends Component {
     handleKey(event) {
         let result = game.listen(event)
         if(result.moved) {
+            event.preventDefault()
             this.tileRef.forEach((ref, index) => {
                 let dx = result.moveVector[index].x * (imageSize + tileGap)
                 let dy = result.moveVector[index].y * (imageSize + tileGap)
