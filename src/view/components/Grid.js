@@ -41,6 +41,7 @@ class Grid extends Component {
                             this.setState({
                                 board: game.board.board,
                             })
+                            this.props.scoreHandler(game.score)
                         })
                     })
                 }

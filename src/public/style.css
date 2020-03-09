@@ -12,14 +12,47 @@ hr {
   height: 1px;
 }
 
+span {
+    font-size: 22px;
+}
+
+.score {
+    font-weight: 700;
+    line-height: 30px;
+    text-align: center;
+    margin-right: 10px;
+    border-radius: 5%;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.score-container {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+}
+
+.current {
+    width: 80px;
+    background: tomato;
+}
+
+.highest {
+    width: 110px;
+    background: lightskyblue;
+}
+
 .card {
+    border-top: 4px solid #000066;;
     display: flex;
     margin: auto;
     box-shadow: 3px 3px 5px 3px rgba(0, 0, 0, 0.35);
     align-items: center;
     align-content: center;
     justify-content: center;
-    width: 800px;
+    width: 750px;
 }
 
 .header {

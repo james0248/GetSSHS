@@ -85,6 +85,7 @@ class gameManager {
                 }
                 if (this.board.getTileRank(next) === rank) {
                     this.board.setTile(next, { rank: rank + 1, isMerged: true , isNew: false })
+                    this.score += (1 << (rank + 1))
                 } else {
                     this.board.setTile(next, { rank: rank, isMerged: false, isNew: false })
                 }
