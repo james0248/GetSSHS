@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { gsap } from 'gsap'
 import Tile from './Tile'
-import gameManager from '../../../game/gameManager'
+import gameManager from '../../game/gameManager'
 
 const game = new gameManager(4)
 let imageSize = 0

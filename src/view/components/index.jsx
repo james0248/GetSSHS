@@ -1,6 +1,6 @@
 import React from 'react'
 import Grid from './Grid'
-import SSHS from '../../../view/public/images/logo.png'
+import SSHS from '../../public/images/logo.png'
 
 let indexPage = <div className='card'>
     <div className='game-container'>
