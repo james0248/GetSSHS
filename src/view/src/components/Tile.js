@@ -24,7 +24,6 @@ const image = {
     9: logo_9,
     10: logo_10,
 }
-const style = null;
 
 class Tile extends Component {
     constructor(props) {
@@ -38,8 +37,8 @@ class Tile extends Component {
         }
         if(this.props.tile.isMerged) {
             gsap.fromTo(this.ref.current, { scale: 1 }, {
-                scale: 1.15,
-                duration: 0.1,
+                scale: 1.2,
+                duration: 0.08,
                 yoyo: true,
                 repeat: 1,
             })
@@ -47,15 +46,24 @@ class Tile extends Component {
     }
 
     render() {
+        if(this.props.tile.rank === 0) {
+            return (
+                <div
+                    className='empty tile'
+                    ref={this.ref}
+                >
+                </div>
+            )
+        }
         return (
-            <img
-                src={image[this.props.tile.rank]}
-                width='100'
-                height='100'
-                style={style}
-                className='grid-tile'
-                ref={this.ref}
-            ></img>
+            <div className='tile'>
+                <div className='tile-background'></div>
+                <img
+                    src={image[this.props.tile.rank]}
+                    className='grid tile'
+                    ref={this.ref}
+                ></img>
+            </div>
         )
     }
 }

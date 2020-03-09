@@ -1,11 +1,11 @@
-import React, { Component, createRef } from 'react'
-import { gsap, CSSPlugin } from 'gsap'
+import React, { Component } from 'react'
+import { gsap } from 'gsap'
 import Tile from './Tile'
 import gameManager from '../../../game/gameManager'
 
-const 
-    game = new gameManager(4),
-    imageSize = 100
+const game = new gameManager(4)
+let imageSize = 0
+let tileGap = 0
 
 class Grid extends Component {
     constructor(props) {
@@ -19,6 +19,8 @@ class Grid extends Component {
     }
 
     componentDidMount() {
+        imageSize = gsap.getProperty('.tile', 'width')
+        tileGap = gsap.getProperty('.tile', 'margin-right')
         document.addEventListener('keydown', this.handleKey)
     }
 
@@ -26,17 +28,21 @@ class Grid extends Component {
         let result = game.listen(event)
         if(result.moved) {
             this.tileRef.forEach((ref, index) => {
-                gsap.to(ref.ref.current, {
-                    x: result.moveVector[index].x * imageSize,
-                    y: result.moveVector[index].y * imageSize,
-                    duration: 0.1,
-                    clearProps: "transform",
-                    onComplete: (() => {
-                        this.setState({
-                            board: game.board.board,
+                let dx = result.moveVector[index].x * (imageSize + tileGap)
+                let dy = result.moveVector[index].y * (imageSize + tileGap)
+                if(dx !== 0 || dy !== 0) {
+                    gsap.to(ref.ref.current, {
+                        x: dx,
+                        y: dy,
+                        duration: 0.1,
+                        clearProps: "transform",
+                        onComplete: (() => {
+                            this.setState({
+                                board: game.board.board,
+                            })
                         })
                     })
-                })
+                }
             })
         }
     }

@@ -1,0 +1,39 @@
+.tile {
+    width: 130px;
+    height: 130px;
+    border-radius: 5%;
+    display: inline-block;
+    margin-right: 15px;
+}
+
+.grid-row {
+    margin-bottom: 15px;
+    width: fit-content;
+    height: 130px;
+}
+
+.grid {
+    background: white;
+    position: relative;
+    z-index: 2;
+}
+
+.grid-container {
+    background: gray;
+    width: fit-content;
+}
+
+.empty {
+    background: lightgray;
+    position: relative;
+    z-index: 1;
+}
+
+.tile-background {
+    width: 130px;
+    height: 130px;
+    border-radius: 5%;
+    background: lightgray;
+    position: absolute;
+    z-index: 0;
+}

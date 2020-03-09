@@ -10,9 +10,7 @@ class App extends Component {
     render() {
         return (
             <div>
-                <div style={style}>
-                    <Grid />
-                </div>
+                <Grid />
                 <p className='game-info'>
                     This game is a <a href='http://sshs.hs.kr/index.do'>SSHS</a>
                     version of the game 2048.
@@ -20,11 +18,6 @@ class App extends Component {
             </div>
         )
     }
-}
-const style = {
-    borderWidth: '7px',
-    borderColor: 'black',
-    borderStyle: 'solid',
 }
 
 ReactDOM.render(<App />, document.getElementById('root'))
