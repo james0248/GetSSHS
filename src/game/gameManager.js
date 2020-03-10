@@ -1,7 +1,6 @@
 const gameBoard = require('./gameBoard')
 
-const
-    moveMap = {
+const moveMap = {
         0: { x: -1, y: 0 },
         1: { x: 0, y: -1 },
         2: { x: 1, y: 0 },
@@ -17,6 +16,7 @@ const
         39: 3, // Right
         68: 3  // D
     }
+
 class gameManager {
     constructor(size) {
         this.size = size
@@ -27,6 +27,9 @@ class gameManager {
     listen(event) {
         let mapped = keyMap[event.keyCode]
         if (mapped !== undefined) {
+	    if (event.preventDefault()) {
+		event.preventDefault();
+	    }
             return this.moveTile(mapped)
         }
         return { moved: false, moveVector: null }
