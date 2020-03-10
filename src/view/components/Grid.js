@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
-import { gsap } from 'gsap'
+import { gsap, TimelineMax } from 'gsap'
 import Tile from './Tile'
+import Cover from './Cover'
 import gameManager from '../../game/gameManager'
 
 const game = new gameManager(4)
@@ -12,10 +13,11 @@ class Grid extends Component {
         super(props)
         this.state = {
             board: game.board.board,
-            moveVector: [],
+            moveable: true,
         }
         this.tileRef = []
         this.handleKey = this.handleKey.bind(this)
+        this.handleRetry = this.handleRetry.bind(this)
     }
 
     componentDidMount() {
@@ -26,27 +28,39 @@ class Grid extends Component {
 
     handleKey(event) {
         let result = game.listen(event)
-        if(result.moved) {
-            event.preventDefault()
+        if (result.moved) {
+            let animation = new TimelineMax({ paused: true })
+            animation.eventCallback("onComplete", (result) => {
+                this.props.scoreHandler(game.score)
+                this.setState({
+                    board: game.board.board,
+                    moveable: result.isMoveable,
+                })
+            }, [result])
             this.tileRef.forEach((ref, index) => {
                 let dx = result.moveVector[index].x * (imageSize + tileGap)
                 let dy = result.moveVector[index].y * (imageSize + tileGap)
-                if(dx !== 0 || dy !== 0) {
-                    gsap.to(ref.ref.current, {
+                if (dx !== 0 || dy !== 0) {
+                    animation.to(ref.ref.current, {
                         x: dx,
                         y: dy,
                         duration: 0.1,
                         clearProps: "transform",
-                        onComplete: (() => {
-                            this.setState({
-                                board: game.board.board,
-                            })
-                            this.props.scoreHandler(game.score)
-                        })
-                    })
+                    }, 0)
                 }
             })
+            animation.play()
         }
+    }
+
+    handleRetry() {
+        game.reset()
+        this.setState({
+            board: game.board.board,
+            moveable: true,
+        })
+        this.props.scoreHandler(game.score)
+        this.tileRef = []
     }
 
     componentWillUnmount() {
@@ -72,6 +86,11 @@ class Grid extends Component {
             <div
                 className='grid-container'
                 align='center' >
+                <Cover
+                    display={!this.state.moveable}
+                    handleRetry={this.handleRetry}
+                    score={game.score}
+                />
                 {board}
             </div>
         )
