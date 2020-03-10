@@ -32,6 +32,9 @@ class Grid extends Component {
             let animation = new TimelineMax({ paused: true })
             animation.eventCallback("onComplete", (result) => {
                 this.props.scoreHandler(game.score)
+                if (!result.isMoveable) {
+                    document.removeEventListener('keydown', this.handleKey)
+                }
                 this.setState({
                     board: game.board.board,
                     moveable: result.isMoveable,
@@ -59,6 +62,7 @@ class Grid extends Component {
             board: game.board.board,
             moveable: true,
         })
+        document.addEventListener('keydown', this.handleKey)
         this.props.scoreHandler(game.score)
         this.tileRef = []
     }

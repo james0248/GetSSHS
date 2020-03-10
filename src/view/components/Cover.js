@@ -21,8 +21,8 @@ class Cover extends Component {
             return (
                 <div className='grid-cover' ref={this.ref}>
                     <p className='game-over'>Game Over!</p>
-                    <div className='score'>You Scored {} points!</div>
-                    <input type='text' id='name'>Your name</input>
+                    <div className='score'>You Scored {this.props.score} points!</div>
+                    <input type='text' id='name' defaultValue='Your name'></input>
                     <a className='button' onClick={this.props.handleRetry}>Retry</a>
                 </div>
             )
