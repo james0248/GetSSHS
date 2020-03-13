@@ -22,6 +22,7 @@ class gameManager {
         this.size = size
         this.board = new gameBoard(size)
         this.score = 0
+        this.startTile = this.board.fillEmptyTile(2)
     }
 
     listen(event) {
@@ -38,6 +39,7 @@ class gameManager {
     reset() {
         this.board = new gameBoard(this.size)
         this.score = 0
+        this.startTile = this.board.fillEmptyTile(2)
     }
 
     getDirectionVector(dir) {
@@ -96,13 +98,19 @@ class gameManager {
                 this.board.setTile(prev, { rank: 0, isMerged: false, isNew: false })
             }
         }
-        this.board.fillEmptyTile(1)
+        let newTile = this.board.fillEmptyTile(1)[0]
 
         let moveable = false
         for(let i = 0; i < 4; i++) {
             moveable = moveable || this.isMoveAvailable(i)
         }
-        return { moved: true, moveVector: moveVector, isMoveable: moveable }
+        return {
+            moved: true,
+            moveVector: moveVector,
+            isMoveable: moveable,
+            direction: dir,
+            newTile: newTile
+        }
     }
 
     clearBoardTags() {
@@ -116,9 +124,18 @@ class gameManager {
     }
 
     isMoveAvailable(dir) {
-        if(!(!Number.isNaN(dir) && Number.isInteger(dir) && dir >= 0 && dir <= 4)) {
+        if (Number.isNaN(dir) || !Number.isInteger(dir) || dir < 0 || dir > 3) {
             return false
         }
+        let prevTags = this.board.board.map(row => {
+            return row.map(tile => {
+                return {
+                    isMerged: tile.isMerged,
+                    isNew: tile.isNew,
+                }
+            })
+        })
+        this.clearBoardTags()
         let moveX = (dir === 2) ? -1 : 1
         let moveY = (dir === 3) ? -1 : 1
         for (let x = (dir === 2) ? 3 : 0; this.clamp(x); x += moveX) {
@@ -126,11 +143,23 @@ class gameManager {
                 let prev = { x: x, y: y }
                 let next = this.getMovedPosition(prev, dir)
                 if (!this.isPositionEqual(prev, next)) {
+                    this.restoreTags(prevTags)
                     return true
                 }
             }
         }
+        this.restoreTags(prevTags)
         return false
+    }
+
+    restoreTags(prevTags) {
+        this.board.board = this.board.board.map((row, x) => {
+            return row.map((tile, y) => {
+                tile.isMerged = prevTags[x][y].isMerged
+                tile.isNew = prevTags[x][y].isNew
+                return tile
+            })
+        })
     }
 
     isPositionEqual(prev, next) {

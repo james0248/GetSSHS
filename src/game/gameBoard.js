@@ -6,8 +6,6 @@ class gameBoard {
             isMerged: false,
             isNew: false,
         }))
-
-        this.fillEmptyTile(2)
     }
 
     fillEmptyTile(number) {
@@ -15,14 +13,18 @@ class gameBoard {
         if(emptyTiles[0] === undefined) {
             return
         }
+        let newTiles = []
         emptyTiles.forEach((index) => {
             let x = Math.floor(index / 4), y = index % 4
-            this.board[x][y] = {
+            let tile = {
                 rank: this.getRandomRank(),
                 isMerged: false,
                 isNew: true,
             }
+            this.board[x][y] = tile
+            newTiles.push([index, tile.rank])
         })
+        return newTiles
     }
 
     getEmptyTile() {
@@ -49,7 +51,7 @@ class gameBoard {
     }
 
     getRandomRank() {
-        return (Math.random() < 0.9)? 1 : 2
+        return (Math.random() < 0.9) ? 1 : 2
     }
 
     setTile(pos, tile) {
