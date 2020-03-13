@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import ReactDOM from 'react-dom';
 import Grid from './components/Grid'
+import LeaderBoard from './components/LeaderBoard'
 import SSHS from '../public/images/logo.png'
 
 class App extends Component {
@@ -43,7 +44,7 @@ class App extends Component {
                         </div>
                     </div>
                     <div className='explanation'>Merge other high schools to reach the almighty <strong>SSHS!</strong></div>
-                    <Grid scoreHandler={this.scoreHandler}/>
+                    <Grid scoreHandler={this.scoreHandler} />
                     <p className='game-info explanation'>
                         <strong>HOW TO PLAY:</strong> Use arrow keys and WASD to move the tiles.
                     When two tiles with the same high school logo touch, they <strong>merge into one!</strong>
@@ -57,6 +58,7 @@ class App extends Component {
                         Created by <a href='https://github.com/james0248'>Hyeonseok Jung.</a> Inspired by <a href='https://mitchgu.github.io/GetMIT/'>GetMIT</a>.
                     It's a clone of <a href="http://gabrielecirulli.com" target="_blank">2048 by Gabriele Cirulli</a> made from scratch.
                 </p>
+                    <LeaderBoard />
                 </div>
             </div>
         )
