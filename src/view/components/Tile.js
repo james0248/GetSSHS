@@ -52,7 +52,7 @@ class Tile extends Component {
             <div className='tile'>
                 <div className='tile-background'></div>
                 <img
-                    src={image[this.props.tile.rank]}
+                    src={image[this.props.tile.rank - 1]}
                     className='grid tile'
                     ref={this.ref}
                 ></img>
