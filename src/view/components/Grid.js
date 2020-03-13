@@ -14,6 +14,9 @@ class Grid extends Component {
         this.state = {
             board: game.board.board,
             moveable: true,
+            inputSeq: '',
+            tileSeq: [game.startTile[0], game.startTile[1]],
+            success: 0,
         }
         this.tileRef = []
         this.handleKey = this.handleKey.bind(this)
@@ -35,9 +38,14 @@ class Grid extends Component {
                 if (!result.isMoveable) {
                     document.removeEventListener('keydown', this.handleKey)
                 }
-                this.setState({
-                    board: game.board.board,
-                    moveable: result.isMoveable,
+                this.setState((prevState) => {
+                    prevState.tileSeq.push(result.newTile)
+                    return {
+                        board: game.board.board,
+                        moveable: result.isMoveable,
+                        inputSeq: prevState.inputSeq + result.direction.toString(),
+                        tileSeq: prevState.tileSeq
+                    }
                 })
             }, [result])
             this.tileRef.forEach((ref, index) => {
@@ -61,10 +69,35 @@ class Grid extends Component {
         this.setState({
             board: game.board.board,
             moveable: true,
+            inputSeq: '',
+            tileSeq: [game.startTile[0], game.startTile[1]],
+            success: 0,
         })
         document.addEventListener('keydown', this.handleKey)
         this.props.scoreHandler(game.score)
         this.tileRef = []
+    }
+
+    async handleSubmit(self, name) {
+        const response = await fetch('http://localhost:8000/check', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                name: name,
+                inputSeq: self.state.inputSeq,
+                tileSeq: self.state.tileSeq,
+                score: game.score
+            })
+        })
+        game.clearBoardTags()
+        if(response.ok) {
+            window.localStorage.setItem('name', name)
+            this.setState({ success: 1 })
+        } else {
+            this.setState({ success: -1 })
+        }
     }
 
     componentWillUnmount() {
@@ -92,7 +125,9 @@ class Grid extends Component {
                 align='center' >
                 <Cover
                     display={!this.state.moveable}
+                    success={this.state.success}
                     handleRetry={this.handleRetry}
+                    handleSubmit={(name) => {let self = this; this.handleSubmit(self, name)}}
                     score={game.score}
                 />
                 {board}
