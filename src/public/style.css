@@ -9,11 +9,85 @@ hr {
   display:block;
   width: 100%;
   background-color:black;
-  height: 1px;
+  height: 2px;
+}
+
+h2 {
+    margin: 0px;
+    display: inline-block;
+    position: relative;
 }
 
 span {
     font-size: 22px;
+}
+
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+
+.ranking-header {
+    align-items: center;
+    display: flex;
+    margin-bottom: 30px;
+    width: 480px;
+    margin-bottom: 10px;
+}
+
+.leaderBoard {
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    border: black;
+    border-width: 2px;
+    align-items: center;
+    width: 480px;
+}
+
+.field input {
+    width: 168px;
+    height: 100%;
+    position: relative;
+    padding: 0px 16px;
+    border: none;
+    border-radius: 4%;
+    font-family: 'Gotham SSm A', 'Gotham SSm B', sans-serif;
+    font-size: large;
+    font-weight: bold;
+    line-height: normal;
+    background-color: transparent;
+    color: #282828;
+    outline: none;
+    transition: 0.3s background-color ease-in-out, 0.3s box-shadow ease-in-out, 0.1s padding ease-in-out;
+    text-align: center;
+}
+
+.field {
+    width: 200px;
+    height: 100%;
+    border-radius: 4px;
+    position: relative;
+    background-color: rgba(255,255,255);
+    transition: 0.3s all;
+    margin: 5px;
+}
+
+.ranking {
+    display: flex;
+    flex-direction: row;
+    margin: 20px;
 }
 
 .grid-cover {
@@ -32,10 +106,29 @@ span {
 
 .game-over {
     font-size: 300%;
+    margin: 20px;
     font-weight: bolder;
 }
 
+#submit {
+    width: 30%;
+    height: 100%;
+    font-size: small;
+    background: coral;
+}
+
+#refresh {
+    display: inline-block;
+    margin-left: auto;
+    width: 15%;
+    height: 100%;
+    font-size: small;
+    background: cornflowerblue;
+    text-align: center;
+}
+
 .button {
+    margin: 5px;
     border-radius: 5%;
     display: flex;
     width: 30%;
@@ -156,7 +249,7 @@ span {
     margin: 100px;
     justify-content: center;
     align-content: center;
-    width: 600px;
+    max-width: 600px;
 }
 
 .empty {
