@@ -16,9 +16,6 @@ class gameManager {
     }
 
     listen(key) {
-        if(key === undefined) {
-            return { moved: false, moveVector: null }
-        }
         return this.moveTile(key)
     }
 

@@ -72,15 +72,17 @@ class Grid extends Component {
 
     handleKey(event) {
         let mapped = keyMap[event.keyCode]
-        this.handleMove(mapped)
-        event.preventDefault();
+        if(mapped !== undefined) {
+            this.handleMove(mapped)
+            event.preventDefault()
+        }
     }
 
     handleMove(mapped) {
         let result = game.listen(mapped)
         if (result.moved) {
             let animation = new TimelineMax({ paused: true })
-            animation.eventCallback("onComplete", (result) => {
+            animation.eventCallback("onComplete", result => {
                 this.props.scoreHandler(game.score)
                 if (!result.isMoveable) {
                     document.removeEventListener('keydown', this.handleKey)
