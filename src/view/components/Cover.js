@@ -4,11 +4,6 @@ import TextInput from './TextInput'
 import success from '../../public/images/check.svg'
 import fail from '../../public/images/x.svg'
 
-const style = {
-    width: '30%',
-    height: '100%',
-}
-
 class Cover extends Component {
     constructor(props) {
         super(props)
@@ -56,20 +51,10 @@ class Cover extends Component {
                 }}
             >Submit</a>
         )
-        if(this.props.success === 1) {
-            submitButton = (
-                <img
-                    style={style}
-                    src={success}
-                ></img>
-            )
-        } else if(this.props.success === -1){
-            submitButton = (
-                <img
-                    style={style}
-                    src={fail}
-                ></img>
-            )
+        if (this.props.success === 1) {
+            submitButton = <img id='submit' src={success} ></img>
+        } else if (this.props.success === -1) {
+            submitButton = <img id='submit' src={fail} ></img>
         }
         if (this.props.display) {
             return (

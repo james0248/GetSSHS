@@ -40,13 +40,7 @@ class Tile extends Component {
 
     render() {
         if (this.props.tile.rank === 0) {
-            return (
-                <div
-                    className='empty tile'
-                    ref={this.ref}
-                >
-                </div>
-            )
+            return <div className='empty tile' ref={this.ref}></div>
         }
         return (
             <div className='tile'>
