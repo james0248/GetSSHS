@@ -1,12 +1,26 @@
-import React, { Component } from 'react'
+import React, { Component, createRef } from 'react'
 import { gsap, TimelineMax } from 'gsap'
 import Tile from './Tile'
 import Cover from './Cover'
 import gameManager from '../../game/gameManager'
 
-const game = new gameManager(4)
+const
+    game = new gameManager(4),
+    keyMap = {
+        38: 0, // Up
+        87: 0, // W
+        37: 1, // Left
+        65: 1, // A
+        40: 2, // Down
+        83: 2, // S
+        39: 3, // Right
+        68: 3  // D
+    };
+
 let imageSize = 0
 let tileGap = 0
+let touchStartClientX = 0
+let touchStartClientY = 0
 
 class Grid extends Component {
     constructor(props) {
@@ -18,25 +32,61 @@ class Grid extends Component {
             tileSeq: [game.startTile[0], game.startTile[1]],
             success: 0,
         }
+        this.gridRef = createRef()
         this.tileRef = []
-        this.handleKey = this.handleKey.bind(this)
+        this.handleMove = this.handleMove.bind(this)
         this.handleRetry = this.handleRetry.bind(this)
+        this.handleSubmit = this.handleSubmit.bind(this)
+        this.handleKey = this.handleKey.bind(this)
+        this.handleTouchEnd = this.handleTouchEnd.bind(this)
     }
 
     componentDidMount() {
         imageSize = gsap.getProperty('.tile', 'width')
         tileGap = gsap.getProperty('.tile', 'margin-right')
         document.addEventListener('keydown', this.handleKey)
+        this.gridRef.current.addEventListener('touchstart', this.handleTouchStart)
+        this.gridRef.current.addEventListener('touchmove', (e) => { e.preventDefault() })
+        this.gridRef.current.addEventListener('touchend', this.handleTouchEnd)
+    }
+
+    handleTouchStart(event) {
+        if (event.touches.length > 1) return;
+        touchStartClientX = event.touches[0].clientX;
+        touchStartClientY = event.touches[0].clientY;
+        event.preventDefault();
+    }
+
+    handleTouchEnd(event) {
+        if (event.touches.length > 0) return;
+        let dx = event.changedTouches[0].clientX - touchStartClientX;
+        let absDx = Math.abs(dx);
+        let dy = event.changedTouches[0].clientY - touchStartClientY;
+        let absDy = Math.abs(dy);
+        if (Math.max(absDx, absDy) > 40) {
+            // (right : left) : (down : up)
+            let move = absDx > absDy ? (dx > 0 ? 3 : 1) : (dy > 0 ? 2 : 0)
+            this.handleMove(move)
+        }
     }
 
     handleKey(event) {
-        let result = game.listen(event)
+        let mapped = keyMap[event.keyCode]
+        this.handleMove(mapped)
+        event.preventDefault();
+    }
+
+    handleMove(mapped) {
+        let result = game.listen(mapped)
         if (result.moved) {
             let animation = new TimelineMax({ paused: true })
             animation.eventCallback("onComplete", (result) => {
                 this.props.scoreHandler(game.score)
                 if (!result.isMoveable) {
                     document.removeEventListener('keydown', this.handleKey)
+                    this.gridRef.current.removeEventListener('touchstart', this.handleTouchStart)
+                    this.gridRef.current.removeEventListener('touchmove', (e) => { e.preventDefault() })
+                    this.gridRef.current.removeEventListener('touchend', this.handleTouchEnd)
                 }
                 this.setState((prevState) => {
                     prevState.tileSeq.push(result.newTile)
@@ -74,25 +124,28 @@ class Grid extends Component {
             success: 0,
         })
         document.addEventListener('keydown', this.handleKey)
+        this.gridRef.current.addEventListener('touchstart', this.handleTouchStart)
+        this.gridRef.current.addEventListener('touchmove', (e) => { e.preventDefault() })
+        this.gridRef.current.addEventListener('touchend', this.handleTouchEnd)
         this.props.scoreHandler(game.score)
         this.tileRef = []
     }
 
-    async handleSubmit(self, name) {
-        const response = await fetch('http://localhost:8000/check', {
+    async handleSubmit(name) {
+        const response = await fetch('https://getsshs-backend.herokuapp.com/check', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
                 name: name,
-                inputSeq: self.state.inputSeq,
-                tileSeq: self.state.tileSeq,
+                inputSeq: this.state.inputSeq,
+                tileSeq: this.state.tileSeq,
                 score: game.score
             })
         })
         game.clearBoardTags()
-        if(response.ok) {
+        if (response.ok) {
             window.localStorage.setItem('name', name)
             this.setState({ success: 1 })
         } else {
@@ -102,6 +155,9 @@ class Grid extends Component {
 
     componentWillUnmount() {
         document.removeEventListener('keydown', this.handleKey)
+        this.gridRef.current.removeEventListener('touchstart', this.handleTouchStart)
+        this.gridRef.current.removeEventListener('touchmove', (e) => { e.preventDefault() })
+        this.gridRef.current.removeEventListener('touchend', this.handleTouchEnd)
     }
 
     render() {
@@ -121,13 +177,14 @@ class Grid extends Component {
 
         return (
             <div
+                ref={this.gridRef}
                 className='grid-container'
                 align='center' >
                 <Cover
                     display={!this.state.moveable}
                     success={this.state.success}
                     handleRetry={this.handleRetry}
-                    handleSubmit={(name) => {let self = this; this.handleSubmit(self, name)}}
+                    handleSubmit={(name) => { this.handleSubmit(name) }}
                     score={game.score}
                 />
                 {board}

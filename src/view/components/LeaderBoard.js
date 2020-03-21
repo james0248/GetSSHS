@@ -7,14 +7,15 @@ class LeaderBoard extends Component {
             ranking: [],
             loading: true
         }
+        this.updateRanking = this.updateRanking.bind(this)
     }
 
     componentDidMount() {
         this.updateRanking(this)
     }
 
-    async updateRanking(self) {
-        const response = (await (await fetch('http://localhost:8000/ranking'))
+    async updateRanking() {
+        const response = (await (await fetch('https://getsshs-backend.herokuapp.com/ranking'))
             .json())
             .map((info, index) => {
                 return (
@@ -22,11 +23,10 @@ class LeaderBoard extends Component {
                         <th>{'#' + (index + 1).toString()}</th>
                         <th>{info.name}</th>
                         <th>{info.score}</th>
-                        <th>{info.time}</th>
                     </tr>
                 )
             })
-        self.setState({ ranking: response })
+        this.setState({ ranking: response })
     }
 
     render() {
@@ -35,7 +35,8 @@ class LeaderBoard extends Component {
                 <div className='ranking-header'>
                     <h2>LeaderBoard</h2>
                     <div
-                        onClick={() => { let self = this; this.updateRanking(self) }}
+                        onClick={this.updateRanking}
+                        onTouchEnd={this.updateRanking}
                         className='button'
                         id='refresh'
                     >Refresh</div>
@@ -47,7 +48,6 @@ class LeaderBoard extends Component {
                             <th>등수</th>
                             <th>이름</th>
                             <th>점수</th>
-                            <th>기록 시간</th>
                         </tr>
                         {this.state.ranking}
                     </tbody>

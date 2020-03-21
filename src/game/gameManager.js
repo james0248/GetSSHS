@@ -5,16 +5,6 @@ const moveMap = {
         1: { x: 0, y: -1 },
         2: { x: 1, y: 0 },
         3: { x: 0, y: 1 },
-    },
-    keyMap = {
-        38: 0, // Up
-        87: 0, // W
-        37: 1, // Left
-        65: 1, // A
-        40: 2, // Down
-        83: 2, // S
-        39: 3, // Right
-        68: 3  // D
     }
 
 class gameManager {
@@ -25,15 +15,11 @@ class gameManager {
         this.startTile = this.board.fillEmptyTile(2)
     }
 
-    listen(event) {
-        let mapped = keyMap[event.keyCode]
-        if (mapped !== undefined) {
-            if (event.preventDefault()) {
-                event.preventDefault();
-            }
-            return this.moveTile(mapped)
+    listen(key) {
+        if(key === undefined) {
+            return { moved: false, moveVector: null }
         }
-        return { moved: false, moveVector: null }
+        return this.moveTile(key)
     }
 
     reset() {

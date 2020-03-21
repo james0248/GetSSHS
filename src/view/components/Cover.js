@@ -50,6 +50,10 @@ class Cover extends Component {
                     e.preventDefault();
                     this.props.handleSubmit(this.state.name)
                 }}
+                onTouchEnd={(e) => {
+                    e.preventDefault();
+                    this.props.handleSubmit(this.state.name)
+                }}
             >Submit</a>
         )
         if(this.props.success === 1) {
