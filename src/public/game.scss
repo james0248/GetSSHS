@@ -1,0 +1,51 @@
+@mixin game($grid-size, $tile-gap) {
+    $tile-number: 4;
+    $tile-size: ($grid-size - ($tile-gap * ($tile-number + 1))) / $tile-number;
+
+    .score {
+        padding-left: $tile-gap;
+        padding-right: $tile-gap;
+        text-align: center;
+        border-radius: 5%;
+        display: inline-block;
+        vertical-align: middle;
+    }
+
+    .grid-container {
+        width: $grid-size;
+        height: $grid-size;
+        margin-top: $tile-gap;
+        margin-bottom: $tile-gap;
+    }
+
+    .tile-background {
+        width: $tile-size;
+        height: $tile-size;
+    }
+
+    .grid-row {
+        margin-bottom: $tile-gap / 2;
+        margin-top: $tile-gap / 2;
+        margin-left: $tile-gap;
+        height: $tile-size;
+    }
+
+    .tile {
+        width: $tile-size;
+        height: $tile-size;
+        margin-right: $tile-gap
+    }
+.ranking-header {
+    width: $grid-size;
+}
+
+.game-container {
+    width: $grid-size;
+}
+}
+
+@mixin smaller($width) {
+    @media only screen and (max-width: $width) {
+        @content;
+    }
+}

@@ -1,7 +1,12 @@
+@import "./game.scss";
+
 $grid-size: 500px;
 $tile-gap: 15px;
 $tile-number: 4;
 $tile-size: ($grid-size - ($tile-gap * ($tile-number + 1))) / $tile-number;
+$mobile-width: 980px;
+
+@include game($grid-size, $tile-gap);
 
 html {
     font-family: Arial, Helvetica, sans-serif;
@@ -24,28 +29,17 @@ h2 {
 }
 
 span {
-    font-size: 25px;
-}
-
-.current {
-    background: tomato;
-}
-
-.highest {
-    background: lightskyblue;
+    font-size: 24px;
 }
 
 .score {
-    padding-left: $tile-gap;
-    padding-right: $tile-gap;
     font-weight: 700;
     line-height: 24px;
-    text-align: center;
     margin-right: 10px;
-    border-radius: 5%;
-    display: inline-block;
-    vertical-align: middle;
 }
+
+.current { background: tomato; }
+.highest { background: lightskyblue; }
 
 .score-container {
     font-size: 12px;
@@ -60,8 +54,7 @@ table {
     width: 100%;
 }
 
-td,
-th {
+td, th {
     border: 1px solid #dddddd;
     text-align: left;
     padding: 8px;
@@ -75,20 +68,18 @@ tr:nth-child(even) {
     align-items: center;
     display: flex;
     margin-bottom: 10px;
-    width: $grid-size;
 }
 
 .leaderBoard {
     display: flex;
     flex-direction: column;
-    align-items: center;
 }
 
 .field input {
-    width: 168px;
+    width: 170px;
     height: 100%;
     position: relative;
-    padding: 0px 16px;
+    padding: 0px 15px;
     border: none;
     border-radius: 4%;
     font-family: 'Gotham SSm A', 'Gotham SSm B', sans-serif;
@@ -107,7 +98,6 @@ tr:nth-child(even) {
     border-radius: 4px;
     position: relative;
     background-color: rgba(255, 255, 255);
-    transition: 0.3s all;
     margin: 5px;
 }
 
@@ -173,18 +163,11 @@ tr:nth-child(even) {
     margin: auto;
     width: $grid-size;
     border-top: 4px solid #000066;
-    ;
     box-shadow: 3px 3px 5px 3px rgba(0, 0, 0, 0.35);
     padding-left: 150px;
     padding-right: 150px;
     padding-top: 100px;
     padding-bottom: 100px;
-}
-
-.header {
-    align-items: center;
-    display: flex;
-    margin-bottom: 30px;
 }
 
 .title {
@@ -208,18 +191,8 @@ tr:nth-child(even) {
 }
 
 .tile {
-    width: $tile-size;
-    height: $tile-size;
     border-radius: 5%;
     display: inline-block;
-    margin-right: $tile-gap
-}
-
-.grid-row {
-    margin-bottom: $tile-gap / 2;
-    margin-top: $tile-gap / 2;
-    margin-left: $tile-gap;
-    height: $tile-size;
 }
 
 .grid {
@@ -229,10 +202,6 @@ tr:nth-child(even) {
 }
 
 .grid-container {
-    width: $grid-size;
-    height: $grid-size;
-    margin-top: $tile-gap;
-    margin-bottom: $tile-gap;
     display: flex;
     position: relative;
     flex-direction: column;
@@ -248,6 +217,7 @@ tr:nth-child(even) {
     position: relative;
     justify-content: center;
     align-content: center;
+    margin: auto;
 }
 
 .empty {
@@ -257,10 +227,106 @@ tr:nth-child(even) {
 }
 
 .tile-background {
-    width: $tile-size;
-    height: $tile-size;
     border-radius: 5%;
     background: lightgray;
     position: absolute;
     z-index: 0;
+}
+
+.header {
+    align-items: center;
+    display: flex;
+    margin-bottom: 30px;
+}
+
+@include smaller($mobile-width) {
+    $grid-size: 80vw;
+    $tile-gap: 2.5vw;
+
+    @include game($grid-size, $tile-gap);
+
+    html {
+        font-size: 25px;
+    }
+
+    .explanation {
+        font-size: 40px;
+        margin-top: 8px;
+        line-height: 200%;
+    }
+
+    .header {
+        margin-top: 20%;
+        margin-bottom: 50px;
+    }
+
+    .title {
+        font-size: 90px;
+    }
+
+    .logo {
+        display: none;
+    }
+
+    .card {
+        display: flex;
+        align-items: center;
+        margin: auto;
+        width: 90vw;
+        border-top: 8px solid #000066;
+        box-shadow: 3px 3px 5px 3px rgba(0, 0, 0, 0.35);
+        padding: 5vw;
+    }
+
+    .score-container {
+        font-size: 28px;
+    }
+
+    .grid-container {
+        margin-top: 30px;
+        margin-bottom: 30px;
+    }
+
+    .score {
+        line-height: 60px;
+        margin-right: 10px;
+        border-radius: 10%;
+    }
+
+    span {
+        font-weight: 700;
+        font-size: 45px;
+    }
+
+    h2 {
+        font-size: 60px;
+    }
+
+    .field input {
+        width: 33vw;
+        padding: 0px 1vw;
+        border-radius: 6%;
+        font-size: 30px;
+    }
+
+    .field {
+        width: 35vw;
+        height: 5vh;
+    }
+
+    #submit {
+        width: 10vw;
+        height: 5vh;
+        font-size: 25px;
+    }
+
+    #refresh {
+        display: inline-block;
+        margin-left: auto;
+        width: 15vw;
+        font-size: 30px;
+        background: cornflowerblue;
+        text-align: center;
+        line-height: 70px;
+    }
 }
