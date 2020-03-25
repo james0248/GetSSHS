@@ -197,7 +197,7 @@ tr:nth-child(even) {
 
 .grid {
     background: white;
-    position: relative;
+    position: absolute;
     z-index: 2;
 }
 
@@ -222,7 +222,7 @@ tr:nth-child(even) {
 
 .empty {
     background: lightgray;
-    position: relative;
+    position: absolute;
     z-index: 1;
 }
 

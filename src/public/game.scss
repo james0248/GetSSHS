@@ -35,13 +35,22 @@
         height: $tile-size;
         margin-right: $tile-gap
     }
-.ranking-header {
-    width: $grid-size;
-}
 
-.game-container {
-    width: $grid-size;
-}
+    .grid {
+        width: $tile-size;
+        height: $tile-size;
+        border-radius: 5%;
+        line-height: $tile-size;
+        font-weight: bold;
+    }
+
+    .ranking-header {
+        width: $grid-size;
+    }
+
+    .game-container {
+        width: $grid-size;
+    }
 }
 
 @mixin smaller($width) {

@@ -31,6 +31,7 @@ class Grid extends Component {
             inputSeq: '',
             tileSeq: [game.startTile[0], game.startTile[1]],
             success: 0,
+            image: true,
         }
         this.gridRef = createRef()
         this.tileRef = []
@@ -124,6 +125,7 @@ class Grid extends Component {
             inputSeq: '',
             tileSeq: [game.startTile[0], game.startTile[1]],
             success: 0,
+            image: true,
         })
         document.addEventListener('keydown', this.handleKey)
         this.gridRef.current.addEventListener('touchstart', this.handleTouchStart)
@@ -152,6 +154,11 @@ class Grid extends Component {
             this.setState({ success: 1 })
         } else {
             this.setState({ success: -1 })
+            if(response.status === 406) {
+                alert('이벤트 기간이 아닙니다')
+            } else if(response.status === 400) {
+                alert('점수 집계 중 문제가 발생하였습니다. 관리자에게 스크린샷과 함께 제보하세요')
+            }
         }
     }
 
@@ -168,7 +175,9 @@ class Grid extends Component {
                 return <Tile
                     key={4 * x + y}
                     ref={(tile) => { this.tileRef[4 * x + y] = tile }}
-                    tile={tile} />
+                    tile={tile} 
+                    image={this.state.image}
+                    />
             })
             return (
                 <div key={`grid-row-${x}`} className='grid-row'>
@@ -178,18 +187,28 @@ class Grid extends Component {
         })
 
         return (
-            <div
-                ref={this.gridRef}
-                className='grid-container'
-                align='center' >
-                <Cover
-                    display={!this.state.moveable}
-                    success={this.state.success}
-                    handleRetry={this.handleRetry}
-                    handleSubmit={(name) => { this.handleSubmit(name) }}
-                    score={game.score}
+            <div>
+                <input
+                    id='image'
+                    type='checkbox'
+                    checked={this.state.image}
+                    onChange={(e) => { e.preventDefault(); this.setState(prevState => { return { image: !prevState.image } }) }}
+                    onTouchEnd={(e) => { e.preventDefault(); this.setState(prevState => { return { image: !prevState.image } }) }}
                 />
-                {board}
+                <label for="image">Play with School Icons</label>
+                <div
+                    ref={this.gridRef}
+                    className='grid-container'
+                    align='center' >
+                    <Cover
+                        display={!this.state.moveable}
+                        success={this.state.success}
+                        handleRetry={this.handleRetry}
+                        handleSubmit={(name) => { this.handleSubmit(name) }}
+                        score={game.score}
+                    />
+                    {board}
+                </div>
             </div>
         )
     }

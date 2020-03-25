@@ -3,6 +3,15 @@ import ReactDOM from 'react-dom';
 import Grid from './components/Grid'
 import LeaderBoard from './components/LeaderBoard'
 import SSHS from '../public/images/logo.png'
+import { image } from './components/images'
+
+const preload = () => {
+    image.forEach(image => {
+        new Image().src = image
+    })
+}
+
+window.onload = preload
 
 class App extends Component {
     constructor(props) {
@@ -10,7 +19,7 @@ class App extends Component {
         let highestScore = window.localStorage.getItem('highestScore')
         this.state = {
             currentScore: 0,
-            highestScore: typeof(highestScore) !== "string"? 0 : highestScore
+            highestScore: typeof (highestScore) !== "string" ? 0 : highestScore
         }
         window.localStorage.setItem('highestScore', this.state.highestScore.toString())
         this.scoreHandler = this.scoreHandler.bind(this)
@@ -18,7 +27,7 @@ class App extends Component {
 
     scoreHandler(score) {
         this.setState((prevState) => {
-            if(prevState.highestScore < score) {
+            if (prevState.highestScore < score) {
                 window.localStorage.setItem('highestScore', score.toString())
                 return {
                     currentScore: score,
