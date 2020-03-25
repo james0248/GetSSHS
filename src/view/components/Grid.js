@@ -192,8 +192,7 @@ class Grid extends Component {
                     id='image'
                     type='checkbox'
                     checked={this.state.image}
-                    onChange={(e) => { e.preventDefault(); this.setState(prevState => { return { image: !prevState.image } }) }}
-                    onTouchEnd={(e) => { e.preventDefault(); this.setState(prevState => { return { image: !prevState.image } }) }}
+                    onChange={() => { this.setState(prevState => { return { image: !prevState.image } }) }}
                 />
                 <label for="image">Play with School Icons</label>
                 <div
