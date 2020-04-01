@@ -1,4 +1,4 @@
-@import "./game.scss";
+@import './game.scss';
 
 $grid-size: 500px;
 $tile-gap: 15px;
@@ -38,8 +38,12 @@ span {
     margin-right: 10px;
 }
 
-.current { background: tomato; }
-.highest { background: lightskyblue; }
+.current {
+    background: tomato;
+}
+.highest {
+    background: lightskyblue;
+}
 
 .score-container {
     font-size: 12px;
@@ -54,7 +58,8 @@ table {
     width: 100%;
 }
 
-td, th {
+td,
+th {
     border: 1px solid #dddddd;
     text-align: left;
     padding: 8px;
@@ -149,7 +154,7 @@ tr:nth-child(even) {
     display: flex;
     width: 30%;
     height: 10%;
-    background: #68BD68;
+    background: #68bd68;
     font-size: x-large;
     font-weight: bold;
     justify-content: center;

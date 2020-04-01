@@ -1,21 +1,24 @@
-class gameBoard {
+class GameBoard {
     constructor(size) {
         this.size = size
-        this.board = new Array(4).fill(0).map(() => new Array(4).fill({
-            rank: 0,
-            isMerged: false,
-            isNew: false,
-        }))
+        this.board = new Array(4).fill(0).map(() =>
+            new Array(4).fill({
+                rank: 0,
+                isMerged: false,
+                isNew: false,
+            })
+        )
     }
 
     fillEmptyTile(number) {
         let emptyTiles = this.getRandomTile(number, this.getEmptyTile())
-        if(emptyTiles[0] === undefined) {
+        if (emptyTiles[0] === undefined) {
             return
         }
         let newTiles = []
         emptyTiles.forEach((index) => {
-            let x = Math.floor(index / 4), y = index % 4
+            let x = Math.floor(index / 4),
+                y = index % 4
             let tile = {
                 rank: this.getRandomRank(),
                 isMerged: false,
@@ -47,11 +50,13 @@ class gameBoard {
                 tiles.push(rand)
             }
         }
-        return tiles.map(index => { return emptyTile[index] })
+        return tiles.map((index) => {
+            return emptyTile[index]
+        })
     }
 
     getRandomRank() {
-        return (Math.random() < 0.9) ? 1 : 2
+        return Math.random() < 0.9 ? 1 : 2
     }
 
     setTile(pos, tile) {
@@ -67,4 +72,4 @@ class gameBoard {
     }
 }
 
-module.exports = gameBoard
+module.exports = GameBoard

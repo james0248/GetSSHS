@@ -20,60 +20,73 @@ class Cover extends Component {
 
     componentDidUpdate() {
         if (this.props.display && this.state.display) {
-            gsap.fromTo(this.ref.current, { opacity: 0 }, {
-                delay: 0.5,
-                opacity: 1,
-                duration: 1.5,
-                onComplete: () => {
-                    this.setState({ display: false })
+            gsap.fromTo(
+                this.ref.current,
+                { opacity: 0 },
+                {
+                    delay: 0.5,
+                    opacity: 1,
+                    duration: 1.5,
+                    onComplete: () => {
+                        this.setState({ display: false })
+                    },
                 }
-            })
+            )
         }
     }
 
     onChange(event) {
-        const value = event.target.value;
-        this.setState({ name: value });
+        const value = event.target.value
+        this.setState({ name: value })
     }
 
     render() {
         let submitButton = (
             <a
-                id='submit'
-                className='button'
+                id="submit"
+                className="button"
                 onClick={(e) => {
-                    e.preventDefault();
+                    e.preventDefault()
                     this.props.handleSubmit(this.state.name)
                 }}
                 onTouchEnd={(e) => {
-                    e.preventDefault();
+                    e.preventDefault()
                     this.props.handleSubmit(this.state.name)
                 }}
-            >Submit</a>
+            >
+                Submit
+            </a>
         )
         if (this.props.success === 1) {
-            submitButton = <img id='submit' src={success} ></img>
+            submitButton = <img id="submit" src={success}></img>
         } else if (this.props.success === -1) {
-            submitButton = <img id='submit' src={fail} ></img>
+            submitButton = <img id="submit" src={fail}></img>
         }
         if (this.props.display) {
             return (
-                <div className='grid-cover' ref={this.ref}>
-                    <p className='game-over'>Game Over!</p>
-                    <div className='score'>You Scored {this.props.score} points!</div>
-                    <div className='ranking'>
+                <div className="grid-cover" ref={this.ref}>
+                    <p className="game-over">Game Over!</p>
+                    <div className="score">
+                        You Scored {this.props.score} points!
+                    </div>
+                    <div className="ranking">
                         <TextInput
-                            id='name'
-                            label='이름을 입력하세요'
+                            id="name"
+                            label="이름을 입력하세요"
                             onChange={this.onChange}
                             value={this.state.name}
                         />
                         {submitButton}
                     </div>
-                    <a className='button' onClick={() => {
-                        this.setState({ display: true });
-                        this.props.handleRetry()
-                    }}>Retry</a>
+                    <a
+                        className="button"
+                        onClick={() => {
+                            this.setState({ display: true })
+                            this.props.handleRetry()
+                        }}
+                    >
+                        Retry
+                    </a>
                 </div>
             )
         }

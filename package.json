@@ -1,32 +1,37 @@
 {
-  "dependencies": {
-    "gsap": "^3.2.4",
-    "react": "^15.0.0 || ^16.0.0",
-    "react-dom": "^15.0.0 || ^16.0.0"
-  },
-  "scripts": {
-    "start:view": "parcel src/public/index.html",
-    "build:view": "rm -rf ./dist && parcel build src/public/index.html --public-url ./",
-    "deploy": "gh-pages -d ./dist"
-  },
-  "devDependencies": {
-    "@babel/core": "^7.0.0-0",
-    "@babel/plugin-proposal-class-properties": "^7.8.3",
-    "@babel/plugin-proposal-export-default-from": "^7.8.3",
-    "@babel/plugin-transform-runtime": "^7.8.3",
-    "@babel/preset-env": "^7.8.7",
-    "@babel/preset-react": "^7.8.3",
-    "@types/react": "^15.0.0 || ^16.0.0",
-    "gh-pages": "^2.2.0",
-    "parcel": "^1.12.4",
-    "react-hot-loader": "^4.12.19",
-    "sass": "^1.26.3"
-  },
-  "name": "GetSSHS",
-  "version": "1.0.0",
-  "main": "index.js",
-  "repository": "https://github.com/james0248/GetSHHS.git",
-  "author": "james0248 <hsjames0248@gmail.com>",
-  "license": "MIT",
-  "homepage": "https://james0248.github.io/GetSSHS"
+    "name": "GetSSHS",
+    "version": "1.0.0",
+    "main": "src/public/index.html",
+    "repository": "https://github.com/james0248/GetSHHS.git",
+    "author": "james0248 <hsjames0248@gmail.com>",
+    "license": "MIT",
+    "homepage": "https://james0248.github.io/GetSSHS",
+    "scripts": {
+        "start": "parcel src/public/index.html",
+        "watch": "parcel watch src/public/index.html",
+        "build": "parcel build src/public/index.html --public-url ./",
+        "format": "prettier --write .",
+        "clean": "rm -rf dist .cache/",
+        "deploy": "gh-pages -d dist"
+    },
+    "husky": {
+        "hooks": {
+            "pre-commit": "pretty-quick --staged"
+        }
+    },
+    "dependencies": {
+        "gsap": "^3.2.4",
+        "react": "^16.13.1",
+        "react-dom": "^16.13.1",
+        "regenerator-runtime": "^0.13.5"
+    },
+    "devDependencies": {
+        "@types/react": "^16.9.31",
+        "gh-pages": "^2.2.0",
+        "husky": "^4.2.3",
+        "parcel": "^1.12.4",
+        "prettier": "^2.0.2",
+        "pretty-quick": "^2.0.1",
+        "sass": "^1.26.3"
+    }
 }
