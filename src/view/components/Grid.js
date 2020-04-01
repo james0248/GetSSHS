@@ -40,6 +40,8 @@ class Grid extends Component {
         this.handleMove = this.handleMove.bind(this)
         this.handleUndo = this.handleUndo.bind(this)
         this.handleRetry = this.handleRetry.bind(this)
+        this.handleStateExport = this.handleStateExport.bind(this)
+        this.handleStateRestoration = this.handleStateRestoration.bind(this)
         this.handleSubmit = this.handleSubmit.bind(this)
         this.handleKey = this.handleKey.bind(this)
         this.handleTouchEnd = this.handleTouchEnd.bind(this)
@@ -191,6 +193,20 @@ class Grid extends Component {
         this.tileRef = []
     }
 
+    async handleStateExport() {
+        await navigator.clipboard.writeText(JSON.stringify(this.state))
+    }
+
+    handleStateRestoration() {
+        let state = JSON.parse(prompt('Input state: '))
+        if (!state || !state.score || !state.board) {
+            return
+        }
+        this.setState(state)
+        game.score = state.score
+        game.board.board = state.board
+    }
+
     async handleSubmit(name) {
         const response = await fetch(
             'https://getsshs-backend.herokuapp.com/check',
@@ -273,6 +289,12 @@ class Grid extends Component {
                 />
                 <label htmlFor="image">Play with School Icons</label>
                 <button onClick={this.handleUndo}>Undo</button>
+                <button onClick={this.handleStateExport}>
+                    Export State To Clipboard
+                </button>
+                <button onClick={this.handleStateRestoration}>
+                    Restore State
+                </button>
                 <div
                     ref={this.gridRef}
                     className="grid-container"
