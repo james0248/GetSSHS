@@ -25,6 +25,7 @@ class Grid extends Component {
     constructor(props) {
         super(props)
         this.state = {
+            isCheating: false,
             scoreHistory: [],
             score: game.score,
             boardHistory: [],
@@ -171,6 +172,7 @@ class Grid extends Component {
     handleRetry() {
         game.reset()
         this.setState({
+            isCheating: false,
             scoreHistory: [],
             score: game.score,
             boardHistory: [],
@@ -288,13 +290,28 @@ class Grid extends Component {
                     }}
                 />
                 <label htmlFor="image">Play with School Icons</label>
-                <button onClick={this.handleUndo}>Undo</button>
-                <button onClick={this.handleStateExport}>
-                    Export State To Clipboard
-                </button>
-                <button onClick={this.handleStateRestoration}>
-                    Restore State
-                </button>
+                <input
+                    id="cheating"
+                    type="checkbox"
+                    checked={this.state.isCheating}
+                    onChange={() => {
+                        this.setState({ isCheating: true })
+                    }}
+                />
+                <label htmlFor="cheating">
+                    Cheat (Warning: you can't turn this off once you turn it on)
+                </label>
+                {this.state.isCheating && (
+                    <>
+                        <button onClick={this.handleUndo}>Undo</button>
+                        <button onClick={this.handleStateExport}>
+                            Export State To Clipboard
+                        </button>
+                        <button onClick={this.handleStateRestoration}>
+                            Restore State
+                        </button>
+                    </>
+                )}
                 <div
                     ref={this.gridRef}
                     className="grid-container"
