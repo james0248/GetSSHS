@@ -4,17 +4,17 @@ import Tile from './Tile'
 import Cover from './Cover'
 import GameManager from '../../game/game-manager'
 
-const game = new GameManager(4),
-    keyMap = {
-        38: 0, // Up
-        87: 0, // W
-        37: 1, // Left
-        65: 1, // A
-        40: 2, // Down
-        83: 2, // S
-        39: 3, // Right
-        68: 3, // D
-    }
+const game = new GameManager(4)
+const keyMap = {
+    38: 0, // Up
+    87: 0, // W
+    37: 1, // Left
+    65: 1, // A
+    40: 2, // Down
+    83: 2, // S
+    39: 3, // Right
+    68: 3, // D
+}
 
 let imageSize = 0
 let tileGap = 0
@@ -25,6 +25,9 @@ class Grid extends Component {
     constructor(props) {
         super(props)
         this.state = {
+            scoreHistory: [],
+            score: game.score,
+            boardHistory: [],
             board: game.board.board,
             moveable: true,
             inputSeq: '',
@@ -35,6 +38,7 @@ class Grid extends Component {
         this.gridRef = createRef()
         this.tileRef = []
         this.handleMove = this.handleMove.bind(this)
+        this.handleUndo = this.handleUndo.bind(this)
         this.handleRetry = this.handleRetry.bind(this)
         this.handleSubmit = this.handleSubmit.bind(this)
         this.handleKey = this.handleKey.bind(this)
@@ -49,9 +53,7 @@ class Grid extends Component {
             'touchstart',
             this.handleTouchStart
         )
-        this.gridRef.current.addEventListener('touchmove', (e) => {
-            e.preventDefault()
-        })
+        this.gridRef.current.addEventListener('touchmove', this.handleTouchMove)
         this.gridRef.current.addEventListener('touchend', this.handleTouchEnd)
     }
 
@@ -62,6 +64,8 @@ class Grid extends Component {
         event.preventDefault()
     }
 
+    handleTouchMove(_event) {}
+
     handleTouchEnd(event) {
         if (event.touches.length > 0) return
         let dx = event.changedTouches[0].clientX - touchStartClientX
@@ -71,14 +75,18 @@ class Grid extends Component {
         if (Math.max(absDx, absDy) > 40) {
             // (right : left) : (down : up)
             let move = absDx > absDy ? (dx > 0 ? 3 : 1) : dy > 0 ? 2 : 0
-            this.handleMove(move)
+            if (this.state.moveable) {
+                this.handleMove(move)
+            }
         }
     }
 
     handleKey(event) {
         let mapped = keyMap[event.keyCode]
         if (mapped !== undefined) {
-            this.handleMove(mapped)
+            if (this.state.moveable) {
+                this.handleMove(mapped)
+            }
             event.preventDefault()
         }
     }
@@ -91,32 +99,23 @@ class Grid extends Component {
                 'onComplete',
                 (result) => {
                     this.props.scoreHandler(game.score)
-                    if (!result.isMoveable) {
-                        document.removeEventListener('keydown', this.handleKey)
-                        this.gridRef.current.removeEventListener(
-                            'touchstart',
-                            this.handleTouchStart
-                        )
-                        this.gridRef.current.removeEventListener(
-                            'touchmove',
-                            (e) => {
-                                e.preventDefault()
-                            }
-                        )
-                        this.gridRef.current.removeEventListener(
-                            'touchend',
-                            this.handleTouchEnd
-                        )
-                    }
                     this.setState((prevState) => {
-                        prevState.tileSeq.push(result.newTile)
                         return {
+                            scoreHistory: [
+                                ...prevState.scoreHistory,
+                                prevState.score,
+                            ],
+                            score: game.score,
+                            boardHistory: [
+                                ...prevState.scoreHistory,
+                                prevState.board,
+                            ],
                             board: game.board.board,
                             moveable: result.isMoveable,
                             inputSeq:
                                 prevState.inputSeq +
                                 result.direction.toString(),
-                            tileSeq: prevState.tileSeq,
+                            tileSeq: [...prevState.tileSeq, result.newTile],
                         }
                     })
                 },
@@ -142,15 +141,42 @@ class Grid extends Component {
         }
     }
 
+    handleUndo() {
+        this.setState((prevState) => {
+            let scoreHistory = prevState.scoreHistory.slice(0, -1)
+            let score = prevState.scoreHistory.slice(-1)[0]
+            let boardHistory = prevState.boardHistory.slice(0, -1)
+            let board = prevState.boardHistory.slice(-1)[0]
+            if (!board) {
+                return {}
+            }
+            let inputSeq = prevState.inputSeq.slice(0, -1)
+            let tileSeq = prevState.tileSeq.slice(0, -1)
+            game.score = score
+            game.board.board = board
+            return {
+                scoreHistory,
+                score,
+                boardHistory,
+                board,
+                inputSeq,
+                tileSeq,
+                moveable: true,
+            }
+        })
+    }
+
     handleRetry() {
         game.reset()
         this.setState({
+            scoreHistory: [],
+            score: game.score,
+            boardHistory: [],
             board: game.board.board,
             moveable: true,
             inputSeq: '',
             tileSeq: [game.startTile[0], game.startTile[1]],
             success: 0,
-            image: true,
         })
         document.addEventListener('keydown', this.handleKey)
         this.gridRef.current.addEventListener(
@@ -245,7 +271,8 @@ class Grid extends Component {
                         })
                     }}
                 />
-                <label for="image">Play with School Icons</label>
+                <label htmlFor="image">Play with School Icons</label>
+                <button onClick={this.handleUndo}>Undo</button>
                 <div
                     ref={this.gridRef}
                     className="grid-container"
