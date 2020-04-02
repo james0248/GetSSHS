@@ -14,7 +14,20 @@ import logo_13 from '../../public/images/설.png'
 import logo_14 from '../../public/images/곽.png'
 
 const image = [
-    logo_1, logo_2, logo_3, logo_4, logo_5, logo_6, logo_7, logo_8, logo_9, logo_10, logo_11, logo_12, logo_13, logo_14
+    logo_1,
+    logo_2,
+    logo_3,
+    logo_4,
+    logo_5,
+    logo_6,
+    logo_7,
+    logo_8,
+    logo_9,
+    logo_10,
+    logo_11,
+    logo_12,
+    logo_13,
+    logo_14,
 ]
 
 const color = [
@@ -35,10 +48,7 @@ const color = [
     '#EB423E',
     '#6EB4DC',
     '#5DA024',
-    '#007FC2'
+    '#007FC2',
 ]
 
-export {
-    image,
-    color,
-}
+export { image, color }

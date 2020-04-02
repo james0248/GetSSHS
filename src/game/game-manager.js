@@ -1,16 +1,16 @@
-const gameBoard = require('./gameBoard')
+import GameBoard from './game-board'
 
 const moveMap = {
-        0: { x: -1, y: 0 },
-        1: { x: 0, y: -1 },
-        2: { x: 1, y: 0 },
-        3: { x: 0, y: 1 },
-    }
+    0: { x: -1, y: 0 },
+    1: { x: 0, y: -1 },
+    2: { x: 1, y: 0 },
+    3: { x: 0, y: 1 },
+}
 
-class gameManager {
+class GameManager {
     constructor(size) {
         this.size = size
-        this.board = new gameBoard(size)
+        this.board = new GameBoard(size)
         this.score = 0
         this.startTile = this.board.fillEmptyTile(2)
     }
@@ -20,7 +20,7 @@ class gameManager {
     }
 
     reset() {
-        this.board = new gameBoard(this.size)
+        this.board = new GameBoard(this.size)
         this.score = 0
         this.startTile = this.board.fillEmptyTile(2)
     }
@@ -41,7 +41,10 @@ class gameManager {
 
         while (this.clamp(next.x) && this.clamp(next.y)) {
             let nextTile = this.board.getTile(next)
-            if ((nextTile.rank !== 0 && nextTile.rank !== thisTile.rank) || nextTile.isMerged) {
+            if (
+                (nextTile.rank !== 0 && nextTile.rank !== thisTile.rank) ||
+                nextTile.isMerged
+            ) {
                 break
             }
             if (nextTile.rank === thisTile.rank && !nextTile.isMerged) {
@@ -60,10 +63,10 @@ class gameManager {
 
         this.clearBoardTags()
         let moveVector = new Array(this.size * this.size).fill(0)
-        let moveX = (dir === 2) ? -1 : 1
-        let moveY = (dir === 3) ? -1 : 1
-        for (let x = (dir === 2) ? 3 : 0; this.clamp(x); x += moveX) {
-            for (let y = (dir === 3) ? 3 : 0; this.clamp(y); y += moveY) {
+        let moveX = dir === 2 ? -1 : 1
+        let moveY = dir === 3 ? -1 : 1
+        for (let x = dir === 2 ? 3 : 0; this.clamp(x); x += moveX) {
+            for (let y = dir === 3 ? 3 : 0; this.clamp(y); y += moveY) {
                 let prev = { x: x, y: y }
                 let rank = this.board.getTileRank(prev)
                 let next = this.getMovedPosition(prev, dir)
@@ -73,18 +76,30 @@ class gameManager {
                     continue
                 }
                 if (this.board.getTileRank(next) === rank) {
-                    this.board.setTile(next, { rank: rank + 1, isMerged: true, isNew: false })
-                    this.score += (1 << (rank + 1))
+                    this.board.setTile(next, {
+                        rank: rank + 1,
+                        isMerged: true,
+                        isNew: false,
+                    })
+                    this.score += 1 << (rank + 1)
                 } else {
-                    this.board.setTile(next, { rank: rank, isMerged: false, isNew: false })
+                    this.board.setTile(next, {
+                        rank: rank,
+                        isMerged: false,
+                        isNew: false,
+                    })
                 }
-                this.board.setTile(prev, { rank: 0, isMerged: false, isNew: false })
+                this.board.setTile(prev, {
+                    rank: 0,
+                    isMerged: false,
+                    isNew: false,
+                })
             }
         }
         let newTile = this.board.fillEmptyTile(1)[0]
 
         let moveable = false
-        for(let i = 0; i < 4; i++) {
+        for (let i = 0; i < 4; i++) {
             moveable = moveable || this.isMoveAvailable(i)
         }
         return {
@@ -92,13 +107,13 @@ class gameManager {
             moveVector: moveVector,
             isMoveable: moveable,
             direction: dir,
-            newTile: newTile
+            newTile: newTile,
         }
     }
 
     clearBoardTags() {
-        this.board.board = this.board.board.map(row => {
-            return row.map(tile => {
+        this.board.board = this.board.board.map((row) => {
+            return row.map((tile) => {
                 tile.isMerged = false
                 tile.isNew = false
                 return tile
@@ -110,8 +125,8 @@ class gameManager {
         if (Number.isNaN(dir) || !Number.isInteger(dir) || dir < 0 || dir > 3) {
             return false
         }
-        let prevTags = this.board.board.map(row => {
-            return row.map(tile => {
+        let prevTags = this.board.board.map((row) => {
+            return row.map((tile) => {
                 return {
                     isMerged: tile.isMerged,
                     isNew: tile.isNew,
@@ -119,10 +134,10 @@ class gameManager {
             })
         })
         this.clearBoardTags()
-        let moveX = (dir === 2) ? -1 : 1
-        let moveY = (dir === 3) ? -1 : 1
-        for (let x = (dir === 2) ? 3 : 0; this.clamp(x); x += moveX) {
-            for (let y = (dir === 3) ? 3 : 0; this.clamp(y); y += moveY) {
+        let moveX = dir === 2 ? -1 : 1
+        let moveY = dir === 3 ? -1 : 1
+        for (let x = dir === 2 ? 3 : 0; this.clamp(x); x += moveX) {
+            for (let y = dir === 3 ? 3 : 0; this.clamp(y); y += moveY) {
                 let prev = { x: x, y: y }
                 let next = this.getMovedPosition(prev, dir)
                 if (!this.isPositionEqual(prev, next)) {
@@ -154,4 +169,4 @@ class gameManager {
     }
 }
 
-module.exports = gameManager
+module.exports = GameManager

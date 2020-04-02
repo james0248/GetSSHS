@@ -11,8 +11,8 @@ class TextInput extends Component {
     }
 
     render() {
-        const { focussed } = this.state;
-        const { id, value, label } = this.props;
+        const { focussed } = this.state
+        const { id, value, label } = this.props
         const fieldValue = `field ${(focussed || value) && 'focussed'}`
         return (
             <div className={fieldValue}>
